@@ -5,10 +5,7 @@ module.exports = {
     node: true
   },
 
-  extends: [
-    'plugin:vue/vue3-essential',
-    '@vue/standard'
-  ],
+  extends: ['plugin:vue/vue3-essential', '@vue/standard', '@vue/typescript', 'plugin:storybook/recommended'],
 
   parserOptions: {
     parser: '@typescript-eslint/parser'
