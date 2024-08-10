@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
 
 type Status = 'pending' | 'inProgress' | 'completed'
 
@@ -12,7 +13,7 @@ export type Task = {
 }
 
 export const useTaskStore = defineStore('task', () => {
-  const tasks = ref<Task[]>([])
+  const tasks = useLocalStorage<Task[]>('tasks', [])
 
   const addTask = (task: Task) => {
     tasks.value.push(task)
