@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import List from './List.vue'
+import Filters from './Filters.vue'
 </script>
 
 <template>
   <div class="board-container">
-    <h1 class="board-title">Tasks board</h1>
+    <div class="board-header">
+      <h1 class="board-title">Tasks board</h1>
+      <Filters />
+    </div>
     <section class="content">
       <List status="pending" />
       <List status="inProgress" />
@@ -20,6 +24,12 @@ import List from './List.vue'
   background-color: #fff;
   padding: 24px;
   border-radius: 16px;
+}
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24px;
 }
 .board-title {
   text-align: left;
