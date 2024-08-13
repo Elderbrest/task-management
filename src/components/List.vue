@@ -22,11 +22,22 @@ const openModal = () => {
 const closeModal = () => {
   isOpenModal.value = false
 }
-
 const handleSubmit = (data: Task) => {
   const payload = { ...data, status: 'pending' }
   taskStore.addTask(payload)
   closeModal()
+}
+const handleDragStart = (event: DragEvent, taskId: string) => {
+  event.dataTransfer!.dropEffect = 'move'
+  event.dataTransfer!.effectAllowed = 'move'
+  event.dataTransfer!.setData('taskId', taskId)
+}
+const handleDrop = (event: DragEvent) => {
+  const taskId = event.dataTransfer!.getData('taskId')
+
+  if (taskId) {
+    taskStore.updateTask({ id: Number(taskId), status: props.status })
+  }
 }
 
 const statusLabel = computed(() => statusLabelMap[props.status])
@@ -39,7 +50,7 @@ const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
       <h3 class="list-title">{{ statusLabel }}</h3>
       <Icon icon="mdi:add-circle-outline" width="24" class="add-icon" @click="openModal" />
     </div>
-    <div class="list-content">
+    <div class="list-content" @dragover.prevent @dragenter.prevent @drop="handleDrop">
       <div v-if="!tasks.length" class="empty-content">
         <p>Oops, looks like there are no tasks</p>
         <Icon icon="emojione-monotone:sad-but-relieved-face" width="36" />
@@ -53,6 +64,7 @@ const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
         :description="task.description"
         :due-date="task.dueDate"
         :status="task.status"
+        :onDragStart="handleDragStart"
       />
     </div>
   </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, defineProps, ref } from 'vue'
+import { withDefaults, defineProps, ref, defineEmits } from 'vue'
 import { Icon } from '@iconify/vue'
 import Status from './Status.vue'
 import Modal from '@/components/Modal.vue'
@@ -23,6 +23,7 @@ const taskStore = useTaskStore()
 const isOpenDeleteModal = ref(false)
 const isOpenEditModal = ref(false)
 
+const emit = defineEmits(['dragStart'])
 const closeDeleteModal = () => {
   isOpenDeleteModal.value = false
 }
@@ -39,16 +40,18 @@ const handleRemoveTask = () => {
   taskStore.removeTask(props.id)
   closeDeleteModal()
 }
-const handleUpdateTask = (data) => {
-  taskStore.updateTask(data)
-  closeEditModal()
+const handleDragStart = (event: DragEvent) => {
+  emit('dragStart', event, props.id)
 }
 </script>
 
 <template>
-  <div class="container">
+  <div class="container" draggable="true" @dragstart="handleDragStart">
     <div class="header">
-      <h4 class="title">{{ title }}</h4>
+      <div class="title-container">
+        <Icon class="drag-icon" icon="icon-park-outline:drag" width="16" />
+        <h4 class="title">{{ title }}</h4>
+      </div>
       <Status :status="status" />
     </div>
     <p class="description">{{ description }}</p>
@@ -99,6 +102,11 @@ const handleUpdateTask = (data) => {
 .title {
   margin: 0;
 }
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 .description {
   padding: 1rem 0;
   text-align: left;
@@ -129,5 +137,12 @@ const handleUpdateTask = (data) => {
   display: flex;
   justify-content: center;
   gap: 1rem;
+}
+.drag-icon {
+  cursor: grab;
+  flex-shrink: 0;
+}
+.drag-icon:active {
+  cursor: grabbing;
 }
 </style>

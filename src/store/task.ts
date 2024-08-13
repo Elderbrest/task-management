@@ -24,7 +24,7 @@ export const useTaskStore = defineStore('task', () => {
     tasks.value = tasks.value.filter(task => task.id !== id)
   }
 
-  const updateTask = (payload: Task) => {
+  const updateTask = (payload: Partial<Task>) => {
     const index = tasks.value.findIndex(task => task.id === payload.id)
 
     if (index !== -1) {
