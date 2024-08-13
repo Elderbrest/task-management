@@ -1,4 +1,5 @@
 /** @type { import('@storybook/vue3-webpack5').StorybookConfig } */
+const path = require('path');
 const config = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
