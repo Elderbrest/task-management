@@ -40,6 +40,7 @@ withDefaults(defineProps<Props>(), {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: flex-start;
 }
 .title {
   margin: 0;

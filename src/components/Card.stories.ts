@@ -7,6 +7,7 @@ export default {
   tags: ['autodocs'],
   argTypes: {
     status: { control: { type: 'select' }, options: ['pending', 'inProgress', 'completed'] },
+    dueDate: { control: 'text' }
   },
   args: { onClick: fn() },
 }
