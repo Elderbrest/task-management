@@ -10,7 +10,6 @@ interface Props {
 }
 
 defineProps<Props>()
-
 </script>
 
 <template>
@@ -29,6 +28,7 @@ defineProps<Props>()
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  background-color: #fff;
   max-width: 320px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
