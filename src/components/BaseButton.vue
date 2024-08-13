@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { defineProps, computed } from 'vue'
+import { withDefaults, defineProps, computed } from 'vue'
 
 interface Props {
-  color: 'primary' | 'success' | 'warning' | 'error';
-  variant: 'primary' | 'outlined';
+  color?: 'primary' | 'success' | 'warning' | 'error';
+  variant?: 'primary' | 'outlined';
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  color: 'primary',
+  variant: 'primary'
+})
 
 const buttonStyleMap = {
   primary: {
