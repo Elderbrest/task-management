@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { computed, defineProps } from 'vue'
+import { computed, defineProps, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { statusLabelMap } from '@/utils/status'
 import Card from './Card.vue'
+import Modal from './Modal.vue'
 
 interface Props {
   status: 'pending' | 'inProgress' | 'completed';
 }
 
 const props = defineProps<Props>()
+const isOpenModal = ref(false)
+
+const openModal = () => isOpenModal.value = true
+const closeModal = () => isOpenModal.value = false
 
 const statusLabel = computed(() => statusLabelMap[props.status])
 </script>
@@ -17,7 +22,7 @@ const statusLabel = computed(() => statusLabelMap[props.status])
   <div class="list-container">
     <div class="list-header">
       <h3 class="list-title">{{ statusLabel }}</h3>
-      <Icon icon="mdi:add-circle-outline" width="24" class="add-icon" />
+      <Icon icon="mdi:add-circle-outline" width="24" class="add-icon" @click="openModal" />
     </div>
     <div class="list-content">
       <Card title="Title of the card" description="This task is gonna be there wowow" due-date="2024-08-12" :status="status" />
@@ -25,6 +30,7 @@ const statusLabel = computed(() => statusLabelMap[props.status])
       <Card title="Title of the card" description="This task is gonna be there wowow" due-date="2024-08-12" :status="status" />
     </div>
   </div>
+  <Modal :is-open="isOpenModal" :modal-close="closeModal" />
 </template>
 
 <style scoped>
