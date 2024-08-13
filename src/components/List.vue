@@ -40,7 +40,12 @@ const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
       <Icon icon="mdi:add-circle-outline" width="24" class="add-icon" @click="openModal" />
     </div>
     <div class="list-content">
+      <div v-if="!tasks.length" class="empty-content">
+        <p>Oops, looks like there are no tasks</p>
+        <Icon icon="emojione-monotone:sad-but-relieved-face" width="36" />
+      </div>
       <Card
+        v-else
         v-for="task in tasks"
         :key="task.id"
         :id="task.id"
@@ -61,12 +66,17 @@ const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
 
 <style scoped>
 .list-container {
+  display: flex;
+  flex-direction: column;
   border-radius: 16px;
+  min-width: 320px;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+
 }
 .list-header {
   display: flex;
   justify-content: space-between;
-  padding: 0 8px 24px 8px;
+  padding: 8px 16px 8px 16px;
 }
 .add-icon {
   color: #75727d;
@@ -79,6 +89,11 @@ const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
 .list-content {
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 1rem;
+  padding: 1rem;
+}
+.empty-content {
+  margin: auto;
 }
 </style>
