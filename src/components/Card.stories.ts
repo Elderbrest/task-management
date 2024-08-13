@@ -5,6 +5,9 @@ export default {
   title: 'Example/Card',
   component: CardComponent,
   tags: ['autodocs'],
+  argTypes: {
+    status: { control: { type: 'select' }, options: ['pending', 'inProgress', 'completed'] },
+  },
   args: { onClick: fn() },
 }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { withDefaults, defineProps } from 'vue'
 import Status from './Status.vue'
 
 interface Props {
@@ -9,7 +9,9 @@ interface Props {
   status: 'pending' | 'inProgress' | 'completed';
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  status: 'pending'
+})
 </script>
 
 <template>
