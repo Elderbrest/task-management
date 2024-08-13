@@ -20,7 +20,7 @@ withDefaults(defineProps<Props>(), {
       <h4 class="title">{{ title }}</h4>
       <Status :status="status" />
     </div>
-    <p>{{ description }}</p>
+    <p class="description">{{ description }}</p>
     <small class="due-date">Due: {{ dueDate }}</small>
   </div>
 </template>
@@ -44,6 +44,10 @@ withDefaults(defineProps<Props>(), {
 }
 .title {
   margin: 0;
+}
+.description {
+  padding: 1rem 0;
+  text-align: left;
 }
 .due-date {
   font-weight: bold;

@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { defineProps, defineEmits, reactive } from 'vue'
+import BaseButton from '@/components/BaseButton.vue'
+
+const props = defineProps({
+  onClose: Function,
+  initialData: {
+    type: Object,
+    default: () => ({
+      title: '',
+      description: '',
+      dueDate: ''
+    })
+  }
+})
+
+const emit = defineEmits(['submit'])
+
+const formData = reactive({ ...props.initialData })
+
+const handleSubmit = () => {
+  emit('submit', { ...formData })
+}
+</script>
+
 <template>
   <form @submit.prevent="handleSubmit">
     <div class="form-group">
@@ -5,7 +30,7 @@
       <input
           id="taskName"
           type="text"
-          v-model="formData.taskName"
+          v-model="formData.title"
           required
       />
     </div>
@@ -14,7 +39,7 @@
       <label for="taskDescription">Description</label>
       <textarea
           id="taskDescription"
-          v-model="formData.taskDescription"
+          v-model="formData.description"
           rows="5"
           required
       ></textarea>
@@ -29,31 +54,13 @@
           required
       />
     </div>
+
+    <div class="form-actions">
+      <BaseButton @click="onClose" color="primary" variant="outlined">Cancel</BaseButton>
+      <BaseButton type="submit" color="primary" variant="primary">Save</BaseButton>
+    </div>
   </form>
 </template>
-
-<script setup>
-import { defineProps, defineEmits, reactive } from 'vue';
-
-const props = defineProps({
-  initialData: {
-    type: Object,
-    default: () => ({
-      taskName: '',
-      taskDescription: '',
-      dueDate: '',
-    }),
-  },
-});
-
-const emit = defineEmits(['submit']);
-
-const formData = reactive({ ...props.initialData });
-
-const handleSubmit = () => {
-  emit('submit', { ...formData });
-};
-</script>
 
 <style scoped>
 .form-group {
@@ -87,5 +94,12 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1rem;
 }
 </style>
