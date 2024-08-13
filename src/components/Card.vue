@@ -14,7 +14,7 @@ interface Props {
   status: 'pending' | 'inProgress' | 'completed';
 }
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   status: 'pending'
 })
 
@@ -27,8 +27,8 @@ const closeDeleteModal = () => {
 const openDeleteModal = () => {
   isOpenDeleteModal.value = true
 }
-const handleRemoveTask = (id: number) => {
-  taskStore.removeTask(id)
+const handleRemoveTask = () => {
+  taskStore.removeTask(props.id)
   closeDeleteModal()
 }
 </script>

@@ -16,7 +16,8 @@ export const useTaskStore = defineStore('task', () => {
   const tasks = useLocalStorage<Task[]>('tasks', [])
 
   const addTask = (task: Task) => {
-    tasks.value.push(task)
+    const id = Math.floor(Math.random() * 1000000)
+    tasks.value.push({ ...task, id })
   }
 
   const removeTask = (id: number) => {
