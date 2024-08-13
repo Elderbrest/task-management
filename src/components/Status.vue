@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps, computed } from 'vue'
+import { statusLabelMap } from '@/utils/status'
 
 interface Props {
   status: 'pending' | 'inProgress' | 'completed';
@@ -11,11 +12,6 @@ const statusClassMap = {
   pending: 'status-pending',
   inProgress: 'status-in-progress',
   completed: 'status-completed',
-}
-const statusLabelMap = {
-  pending: 'Pending',
-  inProgress: 'In progress',
-  completed: 'Completed'
 }
 const statusClass = computed(() => statusClassMap[props.status])
 const statusLabel = computed(() => statusLabelMap[props.status])
