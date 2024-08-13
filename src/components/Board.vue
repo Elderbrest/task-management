@@ -27,6 +27,7 @@ import Filters from './Filters.vue'
 }
 .board-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 24px;
@@ -36,6 +37,13 @@ import Filters from './Filters.vue'
 }
 .content {
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
+}
+
+@media only screen and (max-width: 1024px) {
+  .content {
+    justify-content: center;
+  }
 }
 </style>
