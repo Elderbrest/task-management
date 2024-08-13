@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 
 type Status = 'pending' | 'inProgress' | 'completed'
@@ -14,6 +14,7 @@ export type Task = {
 
 export const useTaskStore = defineStore('task', () => {
   const tasks = useLocalStorage<Task[]>('tasks', [])
+  const filters = ref<Status[]>([])
 
   const addTask = (task: Task) => {
     const id = Math.floor(Math.random() * 1000000)
@@ -32,13 +33,27 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
-  const getTasksByStatus = (status: Status) => computed(() => tasks.value.filter((task) => task.status === status) ?? [])
+  const getTasksByStatus = (status: Status) => computed(
+    () => tasks.value
+      .filter((task) => filters.value.length === 0 || filters.value.includes(task.status))
+      .filter((task) => task.status === status) ?? []
+  )
+
+  const toggleStatusFilter = (value: Status) => {
+    if (filters.value.includes(value)) {
+      filters.value = filters.value.filter(item => item !== value)
+    } else {
+      filters.value.push(value)
+    }
+  }
 
   return {
     tasks,
+    filters,
     addTask,
     removeTask,
     updateTask,
-    getTasksByStatus
+    getTasksByStatus,
+    toggleStatusFilter
   }
 })
