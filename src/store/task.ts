@@ -24,6 +24,14 @@ export const useTaskStore = defineStore('task', () => {
     tasks.value = tasks.value.filter(task => task.id !== id)
   }
 
+  const updateTask = (payload: Task) => {
+    const index = tasks.value.findIndex(task => task.id === payload.id)
+
+    if (index !== -1) {
+      tasks.value[index] = { ...tasks.value[index], ...payload }
+    }
+  }
+
   const inProgressTasks = computed(() => {
     return tasks.value.filter(task => task.status === 'inProgress')
   })
@@ -40,6 +48,7 @@ export const useTaskStore = defineStore('task', () => {
     tasks,
     addTask,
     removeTask,
+    updateTask,
     inProgressTasks,
     pendingTasks,
     completedTasks

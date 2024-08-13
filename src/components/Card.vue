@@ -4,6 +4,7 @@ import { Icon } from '@iconify/vue'
 import Status from './Status.vue'
 import Modal from '@/components/Modal.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import TaskForm from '@/components/TaskForm.vue'
 import { useTaskStore } from '@/store/task'
 
 interface Props {
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const taskStore = useTaskStore()
 const isOpenDeleteModal = ref(false)
+const isOpenEditModal = ref(false)
 
 const closeDeleteModal = () => {
   isOpenDeleteModal.value = false
@@ -27,9 +29,19 @@ const closeDeleteModal = () => {
 const openDeleteModal = () => {
   isOpenDeleteModal.value = true
 }
+const closeEditModal = () => {
+  isOpenEditModal.value = false
+}
+const openEditModal = () => {
+  isOpenEditModal.value = true
+}
 const handleRemoveTask = () => {
   taskStore.removeTask(props.id)
   closeDeleteModal()
+}
+const handleUpdateTask = (data) => {
+  taskStore.updateTask(data)
+  closeEditModal()
 }
 </script>
 
@@ -42,7 +54,10 @@ const handleRemoveTask = () => {
     <p class="description">{{ description }}</p>
     <div class="footer">
       <small class="due-date">Due: {{ dueDate }}</small>
-      <Icon icon="ic:baseline-delete" class="delete-icon" @click="openDeleteModal" />
+      <div class="icons-container">
+        <Icon icon="raphael:edit" class="edit-icon" width="24" @click="openEditModal" />
+        <Icon icon="ic:baseline-delete" class="delete-icon" width="24" @click="openDeleteModal" />
+      </div>
     </div>
   </div>
 
@@ -53,6 +68,13 @@ const handleRemoveTask = () => {
         <BaseButton @click="closeDeleteModal" variant="outlined">Cancel</BaseButton>
         <BaseButton @click="handleRemoveTask" color="error">Delete</BaseButton>
       </div>
+    </template>
+  </Modal>
+
+  <Modal :is-open="isOpenEditModal" :modal-close="closeEditModal">
+    <template #header>Update task</template>
+    <template #content>
+      <TaskForm @submit="handleUpdateTask" :onClose="closeEditModal" :initial-data="props" />
     </template>
   </Modal>
 </template>
@@ -93,6 +115,14 @@ const handleRemoveTask = () => {
 .delete-icon {
   cursor: pointer;
   color: #dc3545;
+}
+.edit-icon {
+  cursor: pointer;
+}
+.icons-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 .actions {
   padding-top: 2rem;
