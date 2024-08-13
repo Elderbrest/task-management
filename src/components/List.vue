@@ -4,6 +4,8 @@ import { Icon } from '@iconify/vue'
 import { statusLabelMap } from '@/utils/status'
 import Card from './Card.vue'
 import Modal from './Modal.vue'
+import TaskForm from './TaskForm.vue'
+import BaseButton from './BaseButton.vue'
 
 interface Props {
   status: 'pending' | 'inProgress' | 'completed';
@@ -30,7 +32,16 @@ const statusLabel = computed(() => statusLabelMap[props.status])
       <Card title="Title of the card" description="This task is gonna be there wowow" due-date="2024-08-12" :status="status" />
     </div>
   </div>
-  <Modal :is-open="isOpenModal" :modal-close="closeModal" />
+  <Modal :is-open="isOpenModal" :modal-close="closeModal">
+    <template #header>New task</template>
+    <template #content>
+      <TaskForm />
+    </template>
+    <template #actions>
+      <BaseButton @click="closeModal" color="primary" variant="outlined">Cancel</BaseButton>
+      <BaseButton @click="closeModal" color="primary" variant="primary">Save</BaseButton>
+    </template>
+  </Modal>
 </template>
 
 <style scoped>
