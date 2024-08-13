@@ -15,6 +15,7 @@ export default {
 export const Card = {
   args: {
     title: 'Card title',
-    description: 'Card description goes here'
+    description: 'Card description goes here',
+    dueDate: '2024-05-20'
   }
 }
