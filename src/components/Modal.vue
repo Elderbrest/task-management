@@ -14,18 +14,14 @@ onClickOutside(target, () => emit('modal-close'))
   <div v-if="isOpen" class="modal-mask">
     <div class="modal-wrapper">
       <div class="modal-container" ref="target">
-        <div class="modal-header">
-          <slot name="header"> default header </slot>
-        </div>
+        <h4 class="modal-header">
+          <slot name="header"></slot>
+        </h4>
         <div class="modal-body">
           <slot name="content"> default content </slot>
         </div>
         <div class="modal-footer">
-          <slot name="footer">
-            <div>
-              <button @click.stop="emit('modal-close')">Submit</button>
-            </div>
-          </slot>
+          <slot name="actions"></slot>
         </div>
       </div>
     </div>
@@ -45,9 +41,19 @@ onClickOutside(target, () => emit('modal-close'))
 .modal-container {
   width: 300px;
   margin: 150px auto;
-  padding: 20px 30px;
+  padding: 16px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+}
+.modal-header {
+  text-align: left;
+  font-weight: bold;
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+  padding-top: 1rem;
 }
 </style>
