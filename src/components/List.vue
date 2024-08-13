@@ -14,6 +14,7 @@ interface Props {
 const props = defineProps<Props>()
 const isOpenModal = ref(false)
 const taskForm = ref(null)
+const sort = ref<string | null>(null)
 const taskStore = useTaskStore()
 
 const openModal = () => {
@@ -42,12 +43,31 @@ const handleDrop = (event: DragEvent) => {
 
 const statusLabel = computed(() => statusLabelMap[props.status])
 const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
+const sortedTasks = computed(() => {
+  return [...tasks.value].sort((a, b) => {
+    const dateA = new Date(a.dueDate)
+    const dateB = new Date(b.dueDate)
+
+    if (sort.value === 'asc') {
+      return dateA.getTime() - dateB.getTime()
+    } else if (sort.value === 'desc') {
+      return dateB.getTime() - dateA.getTime()
+    } else {
+      return 0
+    }
+  })
+})
 </script>
 
 <template>
   <div class="list-container">
     <div class="list-header">
-      <h3 class="list-title">{{ statusLabel }}</h3>
+      <div class="title-container">
+        <h3 class="list-title">{{ statusLabel }}</h3>
+        <Icon v-if="sort == 'asc'" @click="sort='desc'" class="sort-icon" icon="mdi:sort-clock-ascending-outline" width="24" />
+        <Icon v-else-if="sort == 'desc'" @click="sort=null" class="sort-icon" icon="mdi:sort-clock-descending-outline" width="24" />
+        <Icon v-else @click="sort='asc'" class="sort-icon" icon="pepicons-pop:sort" width="24" />
+      </div>
       <Icon icon="mdi:add-circle-outline" width="24" class="add-icon" @click="openModal" />
     </div>
     <div class="list-content" @dragover.prevent @dragenter.prevent @drop="handleDrop">
@@ -57,7 +77,7 @@ const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
       </div>
       <Card
         v-else
-        v-for="task in tasks"
+        v-for="task in sortedTasks"
         :key="task.id"
         :id="task.id"
         :title="task.title"
@@ -89,6 +109,20 @@ const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
   display: flex;
   justify-content: space-between;
   padding: 8px 16px 8px 16px;
+  user-select: none;
+}
+.title-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.sort-icon {
+  cursor: pointer;
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+.sort-icon:hover {
+  opacity: 1;
 }
 .add-icon {
   color: #75727d;
