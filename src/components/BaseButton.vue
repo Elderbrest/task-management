@@ -13,54 +13,54 @@ const buttonStyleMap = {
     primary: {
       backgroundColor: '#007bff',
       color: '#fff',
-      border: '2px solid #007bff',
+      border: '2px solid #007bff'
     },
     outlined: {
       backgroundColor: 'transparent',
       color: '#007bff',
-      border: '2px solid #007bff',
-    },
+      border: '2px solid #007bff'
+    }
   },
   success: {
     primary: {
       backgroundColor: '#28a745',
       color: '#fff',
-      border: '2px solid #28a745',
+      border: '2px solid #28a745'
     },
     outlined: {
       backgroundColor: 'transparent',
       color: '#28a745',
-      border: '2px solid #28a745',
-    },
+      border: '2px solid #28a745'
+    }
   },
   warning: {
     primary: {
       backgroundColor: '#ffc107',
       color: '#fff',
-      border: '2px solid #ffc107',
+      border: '2px solid #ffc107'
     },
     outlined: {
       backgroundColor: 'transparent',
       color: '#ffc107',
-      border: '2px solid #ffc107',
-    },
+      border: '2px solid #ffc107'
+    }
   },
   error: {
     primary: {
       backgroundColor: '#dc3545',
       color: '#fff',
-      border: '2px solid #dc3545',
+      border: '2px solid #dc3545'
     },
     outlined: {
       backgroundColor: 'transparent',
       color: '#dc3545',
-      border: '2px solid #dc3545',
-    },
-  },
+      border: '2px solid #dc3545'
+    }
+  }
 }
 
 const buttonStyle = computed(() => {
-  return buttonStyleMap[props.color][props.variant];
+  return buttonStyleMap[props.color][props.variant]
 })
 </script>
 
