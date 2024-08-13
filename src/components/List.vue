@@ -2,7 +2,7 @@
 import { computed, defineProps, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { statusLabelMap } from '@/utils/status'
-import { useTaskStore } from '@/store/task'
+import { Task, useTaskStore } from '@/store/task'
 import Modal from './Modal.vue'
 import TaskForm from './TaskForm.vue'
 import Card from '@/components/Card.vue'
@@ -23,13 +23,14 @@ const closeModal = () => {
   isOpenModal.value = false
 }
 
-const handleSubmit = (data) => {
+const handleSubmit = (data: Task) => {
   const payload = { ...data, status: 'pending' }
   taskStore.addTask(payload)
   closeModal()
 }
 
 const statusLabel = computed(() => statusLabelMap[props.status])
+const tasks = computed(() => taskStore.getTasksByStatus(props.status)?.value)
 </script>
 
 <template>
@@ -40,13 +41,13 @@ const statusLabel = computed(() => statusLabelMap[props.status])
     </div>
     <div class="list-content">
       <Card
-        v-for="task in taskStore.tasks"
+        v-for="task in tasks"
         :key="task.id"
         :id="task.id"
         :title="task.title"
         :description="task.description"
         :due-date="task.dueDate"
-        status="pending"
+        :status="task.status"
       />
     </div>
   </div>

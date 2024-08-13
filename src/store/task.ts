@@ -32,25 +32,13 @@ export const useTaskStore = defineStore('task', () => {
     }
   }
 
-  const inProgressTasks = computed(() => {
-    return tasks.value.filter(task => task.status === 'inProgress')
-  })
-
-  const pendingTasks = computed(() => {
-    return tasks.value.filter(task => task.status === 'pending')
-  })
-
-  const completedTasks = computed(() => {
-    return tasks.value.filter(task => task.status === 'completed')
-  })
+  const getTasksByStatus = (status: Status) => computed(() => tasks.value.filter((task) => task.status === status) ?? [])
 
   return {
     tasks,
     addTask,
     removeTask,
     updateTask,
-    inProgressTasks,
-    pendingTasks,
-    completedTasks
+    getTasksByStatus
   }
 })
