@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { withDefaults, defineProps } from 'vue'
+import { withDefaults, defineProps, ref } from 'vue'
+import { Icon } from '@iconify/vue'
 import Status from './Status.vue'
+import Modal from '@/components/Modal.vue'
+import BaseButton from '@/components/BaseButton.vue'
+import { useTaskStore } from '@/store/task'
 
 interface Props {
+  id: number;
   title: string;
   description?: string;
   dueDate: string;
@@ -12,6 +17,20 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   status: 'pending'
 })
+
+const taskStore = useTaskStore()
+const isOpenDeleteModal = ref(false)
+
+const closeDeleteModal = () => {
+  isOpenDeleteModal.value = false
+}
+const openDeleteModal = () => {
+  isOpenDeleteModal.value = true
+}
+const handleRemoveTask = (id: number) => {
+  taskStore.removeTask(id)
+  closeDeleteModal()
+}
 </script>
 
 <template>
@@ -21,8 +40,21 @@ withDefaults(defineProps<Props>(), {
       <Status :status="status" />
     </div>
     <p class="description">{{ description }}</p>
-    <small class="due-date">Due: {{ dueDate }}</small>
+    <div class="footer">
+      <small class="due-date">Due: {{ dueDate }}</small>
+      <Icon icon="ic:baseline-delete" class="delete-icon" @click="openDeleteModal" />
+    </div>
   </div>
+
+  <Modal :is-open="isOpenDeleteModal" :modal-close="closeDeleteModal">
+    <template #header>Are you sure you want to delete "{{ title }}" task?</template>
+    <template #content>
+      <div class="actions">
+        <BaseButton @click="closeDeleteModal" variant="outlined">Cancel</BaseButton>
+        <BaseButton @click="handleRemoveTask" color="error">Delete</BaseButton>
+      </div>
+    </template>
+  </Modal>
 </template>
 
 <style scoped>
@@ -49,7 +81,23 @@ withDefaults(defineProps<Props>(), {
   padding: 1rem 0;
   text-align: left;
 }
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 .due-date {
   font-weight: bold;
+}
+.delete-icon {
+  cursor: pointer;
+  color: #dc3545;
+}
+.actions {
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 </style>

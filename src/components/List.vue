@@ -16,8 +16,12 @@ const isOpenModal = ref(false)
 const taskForm = ref(null)
 const taskStore = useTaskStore()
 
-const openModal = () => isOpenModal.value = true
-const closeModal = () => isOpenModal.value = false
+const openModal = () => {
+  isOpenModal.value = true
+}
+const closeModal = () => {
+  isOpenModal.value = false
+}
 
 const handleSubmit = (data) => {
   const payload = { ...data, status: 'pending' }
@@ -37,6 +41,8 @@ const statusLabel = computed(() => statusLabelMap[props.status])
     <div class="list-content">
       <Card
         v-for="task in taskStore.tasks"
+        :key="task.id"
+        :id="task.id"
         :title="task.title"
         :description="task.description"
         :due-date="task.dueDate"
