@@ -29,7 +29,6 @@ const statusLabel = computed(() => statusLabelMap[props.status])
 
 <style scoped>
 .list-container {
-  padding: 24px;
   border-radius: 16px;
 }
 .list-header {
