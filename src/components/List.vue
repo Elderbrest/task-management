@@ -2,10 +2,10 @@
 import { computed, defineProps, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { statusLabelMap } from '@/utils/status'
-import Card from './Card.vue'
+import { useTaskStore } from '@/store/task'
 import Modal from './Modal.vue'
 import TaskForm from './TaskForm.vue'
-import BaseButton from './BaseButton.vue'
+import Card from '@/components/Card.vue'
 
 interface Props {
   status: 'pending' | 'inProgress' | 'completed';
@@ -13,9 +13,17 @@ interface Props {
 
 const props = defineProps<Props>()
 const isOpenModal = ref(false)
+const taskForm = ref(null)
+const taskStore = useTaskStore()
 
 const openModal = () => isOpenModal.value = true
 const closeModal = () => isOpenModal.value = false
+
+const handleSubmit = (data) => {
+  const payload = { ...data, status: 'pending' }
+  taskStore.addTask(payload)
+  closeModal()
+}
 
 const statusLabel = computed(() => statusLabelMap[props.status])
 </script>
@@ -27,19 +35,19 @@ const statusLabel = computed(() => statusLabelMap[props.status])
       <Icon icon="mdi:add-circle-outline" width="24" class="add-icon" @click="openModal" />
     </div>
     <div class="list-content">
-      <Card title="Title of the card" description="This task is gonna be there wowow" due-date="2024-08-12" :status="status" />
-      <Card title="Title of the card" description="This task is gonna be there wowow" due-date="2024-08-12" :status="status" />
-      <Card title="Title of the card" description="This task is gonna be there wowow" due-date="2024-08-12" :status="status" />
+      <Card
+        v-for="task in taskStore.tasks"
+        :title="task.title"
+        :description="task.description"
+        :due-date="task.dueDate"
+        status="pending"
+      />
     </div>
   </div>
   <Modal :is-open="isOpenModal" :modal-close="closeModal">
     <template #header>New task</template>
     <template #content>
-      <TaskForm />
-    </template>
-    <template #actions>
-      <BaseButton @click="closeModal" color="primary" variant="outlined">Cancel</BaseButton>
-      <BaseButton @click="closeModal" color="primary" variant="primary">Save</BaseButton>
+      <TaskForm @submit="handleSubmit" :onClose="closeModal" ref="taskForm" />
     </template>
   </Modal>
 </template>

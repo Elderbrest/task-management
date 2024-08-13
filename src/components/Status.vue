@@ -11,7 +11,7 @@ const props = defineProps<Props>()
 const statusClassMap = {
   pending: 'status-pending',
   inProgress: 'status-in-progress',
-  completed: 'status-completed',
+  completed: 'status-completed'
 }
 const statusClass = computed(() => statusClassMap[props.status])
 const statusLabel = computed(() => statusLabelMap[props.status])

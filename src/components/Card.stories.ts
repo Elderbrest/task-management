@@ -9,12 +9,12 @@ export default {
     status: { control: { type: 'select' }, options: ['pending', 'inProgress', 'completed'] },
     dueDate: { control: 'text' }
   },
-  args: { onClick: fn() },
+  args: { onClick: fn() }
 }
 
 export const Card = {
   args: {
     title: 'Card title',
-    description: 'Card description goes here',
-  },
-};
+    description: 'Card description goes here'
+  }
+}
