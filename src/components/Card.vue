@@ -5,7 +5,7 @@ import Status from './Status.vue'
 import Modal from '@/components/Modal.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import TaskForm from '@/components/TaskForm.vue'
-import { useTaskStore } from '@/store/task'
+import { Task, useTaskStore } from '@/store/task'
 
 interface Props {
   id: number;
@@ -42,6 +42,10 @@ const handleRemoveTask = () => {
 }
 const handleDragStart = (event: DragEvent) => {
   emit('dragStart', event, props.id)
+}
+const handleUpdateTask = (data: Task) => {
+  taskStore.updateTask(data)
+  closeEditModal()
 }
 </script>
 
